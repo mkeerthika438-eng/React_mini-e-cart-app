@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
-
+import SizeSelector from "./SizeSelector";
 import HomePage from "./pages/HomePage";
 import ShopPage from "./pages/ShopPage";
 import WishlistPage from "./pages/WishlistPage";

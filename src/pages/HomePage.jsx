@@ -1,6 +1,9 @@
 import ProductCard from "../components/ProductCard";
 import "../components/Pages.css";
-function HomePage({ products, categories, cart, onAdd, onIncrease, onDecrease, onBuyNow, setPage, setFilterCategory, setFilterSubCategory, setSearch }) {
+
+// This is the HOME page - first page the user sees
+
+function HomePage({ products, categories, cart, wishlist, onAdd, onIncrease, onDecrease, onBuyNow, onToggleWishlist, setPage, setFilterCategory, setFilterSubCategory, setSearch }) {
   const badgeList = [
     { icon: "🚚", title: "Free Delivery", desc: "On orders above ₹1,000" },
     { icon: "↩️", title: "Easy Returns", desc: "7 day hassle-free returns" },
@@ -8,15 +11,19 @@ function HomePage({ products, categories, cart, onAdd, onIncrease, onDecrease, o
     { icon: "✅", title: "Genuine Products", desc: "100% original products" },
   ];
 
-const featuredProducts = products.slice(0, 4);
-function goToCategory(categoryName) {
+  const featuredProducts = products.slice(0, 4);
+
+  // When a category card is clicked, go to shop page filtered by that
+  // category. We also clear the search box and reset sub-category so
+  // nothing leftover hides the products.
+  function goToCategory(categoryName) {
     setFilterCategory(categoryName);
     setFilterSubCategory("All");
     setSearch("");
     setPage("shop");
   }
 
-return (
+  return (
     <div className="page-wrapper">
       <div className="hero-section">
         <div className="hero-small-text">SUMMER MEGA SALE 2025</div>
@@ -47,15 +54,16 @@ return (
         </div>
       </div>
 
-<div className="page-container" style={{ marginTop: "40px" }}>
+      <div className="page-container" style={{ marginTop: "40px" }}>
         <div className="section-heading-row">
           <h2 className="section-heading">🌟 Featured Products</h2>
           <button className="view-all-btn" onClick={() => setPage("shop")}>View All</button>
         </div>
 
-<div className="product-grid">
+        <div className="product-grid">
           {featuredProducts.map((product) => {
             const cartItem = cart.find((item) => item.id === product.id);
+            const isWishlisted = wishlist.some((item) => item.id === product.id);
             return (
               <ProductCard
                 key={product.id}
@@ -65,13 +73,15 @@ return (
                 onIncrease={onIncrease}
                 onDecrease={onDecrease}
                 onBuyNow={onBuyNow}
+                isWishlisted={isWishlisted}
+                onToggleWishlist={onToggleWishlist}
               />
             );
           })}
         </div>
       </div>
 
-<div className="page-container" style={{ marginTop: "40px" }}>
+      <div className="page-container" style={{ marginTop: "40px" }}>
         <div className="badge-grid">
           {badgeList.map((badge) => (
             <div key={badge.title} className="badge-card">

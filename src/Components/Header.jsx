@@ -1,36 +1,44 @@
 import { useState } from "react";
 import "./Header.css";
-function Header({ page, setPage, search, setSearch, totalItems, products, onSelectProduct }) {
-const [showSuggestions, setShowSuggestions] = useState(false);
-function handleSearchChange(e) {
-  setSearch(e.target.value);
-  setShowSuggestions(true);
-  setPage("shop");
-}
-const matchingProducts =
-  search.trim() === ""
-    ? []
-    : products
-        .filter(
-          (p) =>
-            p.name.toLowerCase().includes(search.toLowerCase()) ||
-            p.category.toLowerCase().includes(search.toLowerCase()) ||
-            (p.subCategory &&
-              p.subCategory.toLowerCase().includes(search.toLowerCase()))
-        )
-        .slice(0, 8);
-function handleSuggestionClick(product) {
-  setSearch(product.name.trim());
-  setShowSuggestions(false);
-  setPage("shop");
-}
- return (
-  
-<div className="header-wrapper">
-    <div className="top-bar">
+
+// This component shows the top bar, logo, menu links, search box and cart button.
+// It is used on every page.
+
+function Header({ page, setPage, search, setSearch, totalItems, wishlistCount, products, onSelectProduct }) {
+  // Whether the suggestion dropdown should be visible right now
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  // This runs every time the user types in the search box.
+  // We only switch to the shop page ONCE per visit to the search box,
+  // not on every keystroke - that bug used to make the input lose focus.
+  function handleSearchChange(e) {
+    setSearch(e.target.value);
+    setShowSuggestions(true);
+  }
+
+  // Find up to 6 products whose name contains the typed text.
+  // This list updates on every single letter typed, so typing "s" shows
+  // every product with an "s" in the name, typing "so" narrows it down, etc.
+  const matchingProducts =
+    search.trim() === ""
+      ? []
+      : products.filter((p) => p.name.toLowerCase().includes(search.toLowerCase())).slice(0, 6);
+
+  function handleSuggestionClick(product) {
+    setSearch(product.name);
+    setShowSuggestions(false);
+    setPage("shop");
+  }
+
+  return (
+    <div className="header-wrapper">
+      {/* Top announcement strip */}
+      <div className="top-bar">
         Free Delivery on orders above <strong>₹1,000</strong> | Use code <strong>FIRST5</strong> for 5% off
       </div>
-<div className="navbar">
+
+      {/* Main navbar */}
+      <div className="navbar">
         <div className="logo" onClick={() => setPage("home")}>
           🛍️ ShopEasy
         </div>
@@ -66,17 +74,7 @@ function handleSuggestionClick(product) {
             onFocus={() => setShowSuggestions(true)}
             onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
           />
-{search && (
-  <button
-    className="search-clear-btn"
-    onClick={() => {
-      setSearch("");
-      setPage("shop");
-    }}
-  >
-    ✕
-  </button>
-)}
+
           {showSuggestions && matchingProducts.length > 0 && (
             <div className="search-suggestions">
               {matchingProducts.map((product) => (
@@ -85,7 +83,7 @@ function handleSuggestionClick(product) {
                   className="search-suggestion-item"
                   onClick={() => handleSuggestionClick(product)}
                 >
-                  <img className="search-suggestion-thumb" src={product.image} alt={product.name} />
+                  <img className="search-suggestion-thumb" src={product.images[0]} alt={product.name} />
                   <span className="search-suggestion-name">{product.name}</span>
                   <span className="search-suggestion-price">₹{product.price.toLocaleString("en-IN")}</span>
                 </div>
@@ -93,6 +91,13 @@ function handleSuggestionClick(product) {
             </div>
           )}
         </div>
+
+        <button
+          className={wishlistCount > 0 ? "cart-button cart-button-active" : "cart-button cart-button-empty"}
+          onClick={() => setPage("wishlist")}
+        >
+          ❤️ Wishlist {wishlistCount > 0 && "(" + wishlistCount + ")"}
+        </button>
 
         <button
           className={totalItems > 0 ? "cart-button cart-button-active" : "cart-button cart-button-empty"}

@@ -5,23 +5,29 @@ import Footer from "./components/Footer";
 
 import HomePage from "./pages/HomePage";
 import ShopPage from "./pages/ShopPage";
+import WishlistPage from "./pages/WishlistPage";
 import OffersPage from "./pages/OffersPage";
 import CartPage from "./pages/CartPage";
 import OrderPage from "./pages/OrderPage";
 import SuccessPage from "./pages/SuccessPage";
 
-import products from "./data/Products";
+import products from "./data/products";
 import offers from "./data/offers";
 import categories from "./data/categories";
 
 function App() {
+  // -----------------------------------------
+  // STATE
+  // -----------------------------------------
 
   const [page, setPage] = useState("home");
   const [cart, setCart] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
   const [search, setSearch] = useState("");
   const [filterCategory, setFilterCategory] = useState("All");
   const [filterSubCategory, setFilterSubCategory] = useState("All");
   const [filterRating, setFilterRating] = useState(0);
+  const [filterPrice, setFilterPrice] = useState("All");
   const [appliedCoupon, setAppliedCoupon] = useState(null);
 
   const [name, setName] = useState("");
@@ -34,44 +40,89 @@ function App() {
   const [formErrors, setFormErrors] = useState({});
 
   const [orderId, setOrderId] = useState("");
-  function addToCart(product) {
-    const alreadyInCart = cart.find((item) => item.id === product.id);
 
-    if (alreadyInCart) {
-      const updatedCart = cart.map((item) => {
-        if (item.id === product.id) {
-          return { ...item, qty: item.qty + 1 };
-        }
-        return item;
-      });
-      setCart(updatedCart);
+  // -----------------------------------------
+  // -----------------------------------------
+  // WISHLIST FUNCTION
+  // -----------------------------------------
+  //
+  // The wishlist is a simple list of products the user marked with the
+  // heart ❤️ icon. Unlike the cart, a wishlist item does NOT need a size
+  // or quantity - it is just "I am interested in this product."
+  //
+  // toggleWishlist works like a light switch: if the product is already
+  // in the wishlist, clicking the heart again REMOVES it. If it is not
+  // in the wishlist yet, clicking the heart ADDS it.
+
+  function toggleWishlist(product) {
+    const alreadyInWishlist = wishlist.find((item) => item.id === product.id);
+
+    if (alreadyInWishlist) {
+      const updatedWishlist = wishlist.filter((item) => item.id !== product.id);
+      setWishlist(updatedWishlist);
     } else {
-      setCart([...cart, { ...product, qty: 1 }]);
+      setWishlist([...wishlist, product]);
     }
   }
 
+  // -----------------------------------------
+  // CART FUNCTIONS  (Key Feature: Add/remove from cart)
+  // -----------------------------------------
+  //
+  // IMPORTANT CHANGE FOR THE SIZE FEATURE:
+  // A product can now be added with a size (for clothes/shoes) or
+  // without one (for everything else). Because of this, two cart rows
+  // with the SAME product id but a DIFFERENT size must be treated as
+  // two separate cart lines (example: "Boys Shirt - size M" and
+  // "Boys Shirt - size L" are two rows, not one). To do this, every
+  // function below matches a cart row using BOTH id AND size together.
 
-  function buyNow(product) {
-    const alreadyInCart = cart.find((item) => item.id === product.id);
+  function addToCart(product, size) {
+    const alreadyInCart = cart.find(
+      (item) => item.id === product.id && item.size === size
+    );
 
     if (alreadyInCart) {
       const updatedCart = cart.map((item) => {
-        if (item.id === product.id) {
+        if (item.id === product.id && item.size === size) {
           return { ...item, qty: item.qty + 1 };
         }
         return item;
       });
       setCart(updatedCart);
     } else {
-      setCart([...cart, { ...product, qty: 1 }]);
+      // size will be undefined for products that don't need a size,
+      // which is fine - it just won't show up on the cart page.
+      setCart([...cart, { ...product, qty: 1, size: size }]);
+    }
+  }
+
+  // "Buy Now" adds the product to the cart (same as Add to Cart) and
+  // then immediately jumps to the checkout page, skipping the cart page.
+  function buyNow(product, size) {
+    const alreadyInCart = cart.find(
+      (item) => item.id === product.id && item.size === size
+    );
+
+    if (alreadyInCart) {
+      const updatedCart = cart.map((item) => {
+        if (item.id === product.id && item.size === size) {
+          return { ...item, qty: item.qty + 1 };
+        }
+        return item;
+      });
+      setCart(updatedCart);
+    } else {
+      setCart([...cart, { ...product, qty: 1, size: size }]);
     }
 
     setPage("order");
   }
 
-  function increaseQty(id) {
+  // Key Feature: Quantity management
+  function increaseQty(id, size) {
     const updatedCart = cart.map((item) => {
-      if (item.id === id) {
+      if (item.id === id && item.size === size) {
         return { ...item, qty: item.qty + 1 };
       }
       return item;
@@ -79,15 +130,17 @@ function App() {
     setCart(updatedCart);
   }
 
-  function decreaseQty(id) {
-    const item = cart.find((item) => item.id === id);
+  function decreaseQty(id, size) {
+    const item = cart.find((item) => item.id === id && item.size === size);
 
     if (item.qty === 1) {
-      const updatedCart = cart.filter((item) => item.id !== id);
+      const updatedCart = cart.filter(
+        (item) => !(item.id === id && item.size === size)
+      );
       setCart(updatedCart);
     } else {
       const updatedCart = cart.map((item) => {
-        if (item.id === id) {
+        if (item.id === id && item.size === size) {
           return { ...item, qty: item.qty - 1 };
         }
         return item;
@@ -96,10 +149,14 @@ function App() {
     }
   }
 
-  function removeFromCart(id) {
-    const updatedCart = cart.filter((item) => item.id !== id);
+  function removeFromCart(id, size) {
+    const updatedCart = cart.filter((item) => !(item.id === id && item.size === size));
     setCart(updatedCart);
   }
+
+  // -----------------------------------------
+  // PRICE CALCULATIONS  (Key Feature: Total price calculation)
+  // -----------------------------------------
 
   let totalItems = 0;
   for (let i = 0; i < cart.length; i++) {
@@ -123,6 +180,9 @@ function App() {
 
   const grandTotal = subtotal - discountAmount + deliveryCharge;
 
+  // -----------------------------------------
+  // CHECKOUT FORM VALIDATION
+  // -----------------------------------------
 
   function validateForm() {
     const errors = {};
@@ -164,7 +224,10 @@ function App() {
     setPayment("cod");
   }
 
-  
+  // -----------------------------------------
+  // PAGE RENDERING
+  // -----------------------------------------
+
   return (
     <div>
       <Header
@@ -173,6 +236,7 @@ function App() {
         search={search}
         setSearch={setSearch}
         totalItems={totalItems}
+        wishlistCount={wishlist.length}
         products={products}
       />
 
@@ -181,10 +245,12 @@ function App() {
           products={products}
           categories={categories}
           cart={cart}
+          wishlist={wishlist}
           onAdd={addToCart}
           onIncrease={increaseQty}
           onDecrease={decreaseQty}
           onBuyNow={buyNow}
+          onToggleWishlist={toggleWishlist}
           setPage={setPage}
           setFilterCategory={setFilterCategory}
           setFilterSubCategory={setFilterSubCategory}
@@ -197,17 +263,34 @@ function App() {
           products={products}
           categories={categories}
           cart={cart}
+          wishlist={wishlist}
           onAdd={addToCart}
           onIncrease={increaseQty}
           onDecrease={decreaseQty}
           onBuyNow={buyNow}
+          onToggleWishlist={toggleWishlist}
           filterCategory={filterCategory}
           setFilterCategory={setFilterCategory}
           filterSubCategory={filterSubCategory}
           setFilterSubCategory={setFilterSubCategory}
           filterRating={filterRating}
           setFilterRating={setFilterRating}
+          filterPrice={filterPrice}
+          setFilterPrice={setFilterPrice}
           search={search}
+        />
+      )}
+
+      {page === "wishlist" && (
+        <WishlistPage
+          wishlist={wishlist}
+          cart={cart}
+          onAdd={addToCart}
+          onIncrease={increaseQty}
+          onDecrease={decreaseQty}
+          onBuyNow={buyNow}
+          onToggleWishlist={toggleWishlist}
+          setPage={setPage}
         />
       )}
 

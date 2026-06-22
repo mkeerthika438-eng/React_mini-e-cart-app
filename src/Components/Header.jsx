@@ -129,10 +129,10 @@ function Header({
                   }
                 >
                   <img
-                    src={product.images?.[0]}
-                    alt={product.name}
-                    className="search-suggestion-thumb"
-                  />
+  src={product.images?.[0] || product.image}
+  alt={product.name}
+  className="search-suggestion-thumb"
+/>
 
                   <div className="suggestion-text">
                     <div className="search-suggestion-name">

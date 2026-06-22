@@ -1,4 +1,4 @@
-import "../components/Pages.css";
+import "../Components/Pages.css";
 function OffersPage({ offers, setPage, setAppliedCoupon, setFilterCategory, setFilterSubCategory }) {
 
   function applyOffer(offer) {

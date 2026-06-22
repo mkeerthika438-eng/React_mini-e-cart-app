@@ -1,4 +1,4 @@
-import "../components/Pages.css";
+import "../Components/Pages.css";
 function SuccessPage({ orderId, name, email, payment, address, city, pincode, grandTotal, setPage, onContinueShopping }) {
   let paymentText = "Cash on Delivery";
   if (payment === "upi") paymentText = "UPI / Net Banking";

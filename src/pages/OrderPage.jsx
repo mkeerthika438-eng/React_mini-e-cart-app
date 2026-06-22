@@ -1,4 +1,4 @@
-import "../components/Pages.css";
+import "../Components/Pages.css";
 function OrderPage({
   setPage,
   name, setName,

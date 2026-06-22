@@ -1,7 +1,7 @@
 import { useState } from "react";
-import ProductCard from "../components/ProductCard";
-import QuickPreviewModal from "../components/QuickPreviewModal";
-import "../components/Pages.css";
+import ProductCard from "../Components/ProductCard";
+import QuickPreviewModal from "../Components/QuickPreviewModal";
+import "../Components/Pages.css";
 
 function HomePage({ products, categories, cart, onAdd, onIncrease, onDecrease, onBuyNow, setPage, setFilterCategory, setFilterSubCategory, setSearch }) {
   const [previewProduct, setPreviewProduct] = useState(null);

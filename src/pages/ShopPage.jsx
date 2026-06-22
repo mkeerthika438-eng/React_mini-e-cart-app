@@ -1,7 +1,7 @@
 import { useState } from "react";
-import ProductCard from "../components/ProductCard";
-import QuickPreviewModal from "../components/QuickPreviewModal";
-import "../components/Pages.css";
+import ProductCard from "../Components/ProductCard";
+import QuickPreviewModal from "../Components/QuickPreviewModal";
+import "../Components/Pages.css";
 import "./ShopPage.css";
 
 const SORT_OPTIONS = [

@@ -1,5 +1,5 @@
 import { useWishlist } from "../context/WishlistContext";
-import "../components/Pages.css";
+import "../Components/Pages.css";
 import "./WishlistPage.css";
 
 function StarRating({ rating }) {

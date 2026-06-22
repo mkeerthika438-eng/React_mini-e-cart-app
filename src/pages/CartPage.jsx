@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../components/Pages.css";
+import "../Components/Pages.css";
 
 function CartPage({
   cart,

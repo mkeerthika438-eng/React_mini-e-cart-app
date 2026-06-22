@@ -21,11 +21,18 @@ function Footer({ setPage, setFilterCategory, setFilterSubCategory, setSearch })
     setPage("shop");
   }
 
-  
   function handleHelpClick(linkName) {
-    alert(linkName + " page is coming soon!");
+  if (linkName === "Track Order") {
+    alert("Track your order in real-time. Enter your order details to view the latest delivery status.");
+  } else if (linkName === "Returns") {
+    alert("We offer a hassle-free return process. Eligible products can be returned within 7 days of delivery.");
+  } else if (linkName === "FAQs") {
+    alert("Find answers to frequently asked questions about orders, payments, shipping, and returns.");
+  } else if (linkName === "Contact Us") {
+    alert("Our customer support team is ready to help. Call us at 1800-000-SHOP or email support@shopeasy.in.");
   }
-
+}
+  
   return (
     <div className="footer">
       <div className="footer-columns">

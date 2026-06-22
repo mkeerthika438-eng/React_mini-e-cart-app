@@ -31,8 +31,7 @@ function ShopPage({
     ? ["All", ...selectedCategoryData.subCategories]
     : null;
 
-  // Filter
-  let filtered = products.filter((p) => {
+ let filtered = products.filter((p) => {
     const q = search.toLowerCase();
     const matchSearch =
       !q ||
@@ -45,7 +44,7 @@ function ShopPage({
     return matchSearch && matchCat && matchSub && matchRating;
   });
 
-  // Sort
+  
   filtered = [...filtered].sort((a, b) => {
     if (sortBy === "price-asc") return a.price - b.price;
     if (sortBy === "price-desc") return b.price - a.price;
@@ -93,9 +92,7 @@ function ShopPage({
           </button>
         ))}
       </div>
-
-      {/* Sub-category + rating + sort row */}
-      <div className="filter-secondary-bar">
+            <div className="filter-secondary-bar">
         {subCategoryButtons && (
           <div className="subfilter-group">
             <span className="subfilter-label">Type:</span>

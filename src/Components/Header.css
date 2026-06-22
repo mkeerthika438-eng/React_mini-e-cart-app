@@ -11,10 +11,6 @@
   color: var(--color-accent-light);
 }
 
-/* IMPORTANT FIX: the header wrapper is sticky as ONE block (top bar +
-   navbar together), so when you scroll down only this whole block
-   sticks to the very top - it does not float to the center of the
-   page like it did before. */
 .header-wrapper {
   position: sticky;
   top: 0;
@@ -62,7 +58,6 @@
   color: white;
 }
 
-/* Search wrapper holds the input AND the dropdown suggestion list */
 .search-wrapper {
   flex: 1;
   min-width: 160px;
@@ -177,7 +172,6 @@
   }
 }
 
-/* Wishlist nav button */
 .wishlist-nav-btn {
   position: relative;
   background: rgba(255,255,255,0.12);
@@ -215,7 +209,6 @@
   justify-content: center;
 }
 
-/* Search clear button */
 .search-clear-btn {
   position: absolute;
   right: 10px;
@@ -229,7 +222,6 @@
   padding: 2px 5px;
 }
 
-/* Search suggestion improvements */
 .search-suggestions-header {
   padding: 10px 14px 6px;
   font-size: 11px;

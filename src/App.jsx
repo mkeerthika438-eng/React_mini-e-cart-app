@@ -35,10 +35,6 @@ function AppInner() {
   const [formErrors, setFormErrors] = useState({});
   const [orderId, setOrderId] = useState("");
 
-  // ---- Cart functions ----
-  // size is passed for Fashion products, null for all others.
-  // Cart items are uniquely identified by (id, size) — so the same
-  // product in two different sizes appears as two separate cart rows.
   function cartKey(id, size) {
     return size ? `${id}__${size}` : `${id}`;
   }
@@ -79,14 +75,12 @@ function AppInner() {
     setCart((prev) => prev.filter((i) => cartKey(i.id, i.size) !== key));
   }
 
-  // ---- Calculations ----
   const totalItems = cart.reduce((sum, i) => sum + i.qty, 0);
   const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
   const discountAmount = appliedCoupon ? Math.round((subtotal * appliedCoupon.discount) / 100) : 0;
   const deliveryCharge = subtotal > 1000 ? 0 : 199;
   const grandTotal = subtotal - discountAmount + deliveryCharge;
 
-  // ---- Order / form ----
   function validateForm() {
     const errors = {};
     if (!name.trim()) errors.name = "Please enter your name";
@@ -99,7 +93,7 @@ function AppInner() {
     return Object.keys(errors).length === 0;
   }
 
-  function placeOrder() {
+function placeOrder() {
     if (validateForm()) {
       setOrderId("ORD" + (Math.floor(Math.random() * 90000000) + 10000000));
       setCart([]);
@@ -108,13 +102,12 @@ function AppInner() {
     }
   }
 
-  function resetFormAndGoShopping() {
+function resetFormAndGoShopping() {
     setPage("shop");
     setName(""); setEmail(""); setPhone(""); setAddress(""); setCity(""); setPincode(""); setPayment("cod");
   }
 
-  // When user clicks search suggestion → go to shop with search pre-filled
-  function handleHeaderPreview(product) {
+function handleHeaderPreview(product) {
     setSearch(product.name);
     setPage("shop");
   }

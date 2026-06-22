@@ -34,8 +34,6 @@ function WishlistPage({ onAdd, setPage }) {
   }
 
   function handleMoveToCart(product) {
-    // Size is not stored in wishlist — Fashion items are added without a size here.
-    // The size badge won't show in cart until the user re-adds with a size from the Shop page.
     onAdd(product, null);
     removeFromWishlist(product.id);
   }

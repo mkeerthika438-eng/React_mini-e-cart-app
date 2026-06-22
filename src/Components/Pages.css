@@ -9,7 +9,6 @@
   padding: 0 20px;
 }
 
-/* Hero banner on home page */
 .hero-section {
   background: linear-gradient(135deg, #3730a3 0%, #6d28d9 100%);
   color: white;
@@ -110,7 +109,6 @@
   background-color: var(--color-primary-light);
 }
 
-/* Category cards grid */
 .category-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -142,14 +140,12 @@
   color: var(--color-text-dark);
 }
 
-/* Product grid (used on Home and Shop pages) */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 18px;
 }
 
-/* Trust badges row */
 .badge-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -182,7 +178,6 @@
   margin-top: 2px;
 }
 
-/* Category filter chips on Shop page (main categories) */
 .filter-bar {
   background-color: var(--color-white);
   border-bottom: 1px solid var(--color-border);
@@ -192,7 +187,6 @@
   overflow-x: auto;
 }
 
-/* Sub-category chips (Boys / Girls / Kids) - only shown when Fashion is selected */
 .subfilter-bar {
   background-color: #fdfaf5;
   border-bottom: 1px solid var(--color-border);
@@ -269,7 +263,6 @@
   color: var(--color-text-light);
 }
 
-/* Offers page */
 .offers-hero {
   background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
   color: white;
@@ -609,7 +602,6 @@
   font-weight: 600;
 }
 
-/* Order / Checkout page */
 .order-page-container {
   max-width: 720px;
   margin: 0 auto;
@@ -761,7 +753,6 @@
   background-color: #036452;
 }
 
-/* Order success page */
 .success-container {
   max-width: 600px;
   margin: 48px auto;
@@ -832,7 +823,6 @@
   cursor: pointer;
 }
 
-/* --- Improved filter bar --- */
 .filter-bar {
   display: flex;
   gap: 8px;
@@ -888,7 +878,6 @@
   box-shadow: 0 2px 8px rgba(55,48,163,0.25);
 }
 
-/* --- Responsive product grid --- */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -919,7 +908,6 @@
   }
 }
 
-/* ---- Cart size badge ---- */
 .cart-item-size-badge {
   display: inline-block;
   font-size: 12px;

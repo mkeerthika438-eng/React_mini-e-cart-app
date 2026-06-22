@@ -25,7 +25,6 @@ function QuickPreviewModal({ product, onClose, onAdd, onBuyNow, cartItems = [], 
   const isFashion = product.category === "Fashion";
   const discountPercent = Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100);
 
-  // Find cart entry for current size (or non-fashion item)
   const cartItem = isFashion
     ? (selectedSize ? cartItems.find((i) => i.size === selectedSize) : null)
     : cartItems.find((i) => i.id === product.id);
@@ -62,7 +61,6 @@ function QuickPreviewModal({ product, onClose, onAdd, onBuyNow, cartItems = [], 
       <div className="qp-modal" onClick={(e) => e.stopPropagation()}>
         <button className="qp-close" onClick={onClose}>✕</button>
 
-        {/* Image gallery */}
         <div className="qp-gallery">
           <div className="qp-main-img-wrap">
             <img src={gallery[activeImg]} alt={product.name} className="qp-main-img" />
@@ -81,7 +79,6 @@ function QuickPreviewModal({ product, onClose, onAdd, onBuyNow, cartItems = [], 
           </div>
         </div>
 
-        {/* Product info */}
         <div className="qp-info">
           <div className="qp-category">
             {product.category}{product.subCategory ? ` › ${product.subCategory}` : ""}
@@ -105,7 +102,6 @@ function QuickPreviewModal({ product, onClose, onAdd, onBuyNow, cartItems = [], 
             <div className="qp-meta-row"><span>In Stock</span><span className="qp-instock">✓ Available</span></div>
           </div>
 
-          {/* Size selector inside modal — Fashion only */}
           {isFashion && (
             <div className="qp-size-selector">
               <div className="qp-size-label-row">

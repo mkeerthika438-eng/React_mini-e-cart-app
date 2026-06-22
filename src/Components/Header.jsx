@@ -24,7 +24,6 @@ function Header({ page, setPage, search, setSearch, totalItems, products, onPrev
   const wrapperRef = useRef(null);
   const { wishlist } = useWishlist();
 
-  // Close dropdown on outside click
   useEffect(() => {
     function handleClick(e) {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
@@ -50,7 +49,6 @@ function Header({ page, setPage, search, setSearch, totalItems, products, onPrev
     }
   }
 
-  // Search by name, category, subCategory
   const q = search.toLowerCase().trim();
   const matchingProducts = q === ""
     ? []

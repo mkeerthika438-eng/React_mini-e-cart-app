@@ -65,7 +65,6 @@ function CartPage({
                         {item.category}{item.subCategory ? " · " + item.subCategory : ""}
                       </div>
 
-                      {/* Size badge — only shown for Fashion items */}
                       {item.size && (
                         <div className="cart-item-size-badge">
                           Size: <strong>{item.size}</strong>

@@ -1,9 +1,6 @@
 import "../components/Pages.css";
-
 function OffersPage({ offers, setPage, setAppliedCoupon, setFilterCategory, setFilterSubCategory }) {
-  // Applying an offer takes you to the cart. We also reset the shop
-  // filters here so that whatever category you last browsed does not
-  // stay "stuck" and hide products the next time you open the Shop page.
+
   function applyOffer(offer) {
     setAppliedCoupon(offer);
     setFilterCategory("All");

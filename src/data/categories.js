@@ -1,8 +1,3 @@
-// Main categories shown on the home page and in the Shop page filter.
-// Some categories have "subCategories" (like Fashion -> Boys/Girls/Kids).
-// A product's "category" field should match one of these names,
-// and if it has a subCategory, the "subCategory" field should match too.
-
 const categories = [
   {
     name: "Fashion",

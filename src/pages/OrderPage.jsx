@@ -1,5 +1,4 @@
 import "../components/Pages.css";
-
 function OrderPage({
   setPage,
   name, setName,

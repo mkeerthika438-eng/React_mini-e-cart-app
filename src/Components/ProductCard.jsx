@@ -38,7 +38,6 @@ function ProductCard({ product, cartItems, onAdd, onIncrease, onDecrease, onBuyN
   const isFashion = product.category === "Fashion";
   const discountPercent = Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100);
 
-  // For fashion, cartItem is keyed by id+size; for others, just by id
   const cartItem = isFashion
     ? (selectedSize ? (cartItems || []).find((i) => i.id === product.id && i.size === selectedSize) : null)
     : (cartItems || []).find((i) => i.id === product.id);
@@ -66,7 +65,6 @@ function ProductCard({ product, cartItems, onAdd, onIncrease, onDecrease, onBuyN
     setSizeError(false);
   }
 
-  // cart key for qty controls
   const cartKey = isFashion ? { id: product.id, size: selectedSize } : { id: product.id };
 
   return (
@@ -118,7 +116,6 @@ function ProductCard({ product, cartItems, onAdd, onIncrease, onDecrease, onBuyN
         </div>
         <div className="price-savings">Save ₹{(product.oldPrice - product.price).toLocaleString("en-IN")}</div>
 
-        {/* Size selector — only for Fashion */}
         {isFashion && (
           <div className="size-selector">
             <div className="size-label-row">
@@ -140,7 +137,6 @@ function ProductCard({ product, cartItems, onAdd, onIncrease, onDecrease, onBuyN
           </div>
         )}
 
-        {/* Show Add to Cart / Buy Now when item not in cart (or no size selected yet for fashion) */}
         {!cartItem && (
           <div className="button-row">
             <button className="add-cart-btn" onClick={handleAdd}>
@@ -152,7 +148,6 @@ function ProductCard({ product, cartItems, onAdd, onIncrease, onDecrease, onBuyN
           </div>
         )}
 
-        {/* Show qty controls when item IS in cart for that size */}
         {cartItem && (
           <div className="qty-and-buy">
             <div className="qty-box">

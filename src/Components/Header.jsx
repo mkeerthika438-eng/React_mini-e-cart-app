@@ -1,145 +1,109 @@
-import { useState, useRef, useEffect } from "react";
-import { useWishlist } from "../context/WishlistContext";
+import { useState } from "react";
 import "./Header.css";
 
-function escapeRegex(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
+// This component shows the top bar, logo, menu links, search box and cart button.
+// It is used on every page.
 
-function HighlightMatch({ text, query }) {
-  if (!query.trim()) return <span>{text}</span>;
-  const regex = new RegExp(`(${escapeRegex(query)})`, "gi");
-  const parts = txt.split(regex);
-  return (
-    <span>
-      {parts.map((p, i) =>
-        regex.test(p) ? <mark key={i} style={{ background: "#fef08a", borderRadius: "2px", padding: "0 1px" }}>{p}</mark> : p
-      )}
-    </span>
-  );
-}
-
-function Header({ page, setPage, search, setSearch, totalItems, products, onPreview }) {
+function Header({ page, setPage, search, setSearch, totalItems, wishlistCount, products, onSelectProduct }) {
+  // Whether the suggestion dropdown should be visible right now
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const wrapperRef = useRef(null);
-  const { wishlist } = useWishlist();
 
-  useEffect(() => {
-    function handleClick(e) {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
-        setShowSuggestions(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
-
+  // This runs every time the user types in the search box.
+  // We only switch to the shop page ONCE per visit to the search box,
+  // not on every keystroke - that bug used to make the input lose focus.
   function handleSearchChange(e) {
     setSearch(e.target.value);
     setShowSuggestions(true);
   }
 
-  function handleSearchKeyDown(e) {
-    if (e.key === "Enter" && search.trim()) {
-      setShowSuggestions(false);
-      setPage("shop");
-    }
-    if (e.key === "Escape") {
-      setShowSuggestions(false);
-    }
-  }
-
-  const q = search.toLowerCase().trim();
-  const matchingProducts = q === ""
-    ? []
-    : products.filter((p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q) ||
-        (p.subCategory && p.subCategory.toLowerCase().includes(q))
-      ).slice(0, 7);
+  // Find up to 6 products whose name contains the typed text.
+  // This list updates on every single letter typed, so typing "s" shows
+  // every product with an "s" in the name, typing "so" narrows it down, etc.
+  //
+  // SAFETY CHECK: we also make sure every product actually has a non-empty
+  // "images" array before including it. This stops the whole page from
+  // crashing if one product in products.js is ever missing its images.
+  const matchingProducts =
+    search.trim() === ""
+      ? []
+      : products
+          .filter((p) => Array.isArray(p.images) && p.images.length > 0)
+          .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
+          .slice(0, 6);
 
   function handleSuggestionClick(product) {
     setSearch(product.name);
     setShowSuggestions(false);
     setPage("shop");
-    if (onPreview) onPreview(product);
   }
-
-  function handleSearchSubmit() {
-    if (search.trim()) {
-      setShowSuggestions(false);
-      setPage("shop");
-    }
-  }
-
-  const showDropdown = showSuggestions && q !== "";
 
   return (
     <div className="header-wrapper">
+      {/* Top announcement strip */}
       <div className="top-bar">
         Free Delivery on orders above <strong>₹1,000</strong> | Use code <strong>FIRST5</strong> for 5% off
       </div>
 
+      {/* Main navbar */}
       <div className="navbar">
-        <div className="logo" onClick={() => setPage("home")}>🛍️ ShopEasy</div>
+        <div className="logo" onClick={() => setPage("home")}>
+          🛍️ ShopEasy
+        </div>
 
-        <button className={page === "home" ? "nav-link nav-link-active" : "nav-link"} onClick={() => setPage("home")}>Home</button>
-        <button className={page === "shop" ? "nav-link nav-link-active" : "nav-link"} onClick={() => setPage("shop")}>Shop</button>
-        <button className={page === "offers" ? "nav-link nav-link-active" : "nav-link"} onClick={() => setPage("offers")}>Offers 🔥</button>
+        <button
+          className={page === "home" ? "nav-link nav-link-active" : "nav-link"}
+          onClick={() => setPage("home")}
+        >
+          Home
+        </button>
 
-        <div className="search-wrapper" ref={wrapperRef}>
+        <button
+          className={page === "shop" ? "nav-link nav-link-active" : "nav-link"}
+          onClick={() => setPage("shop")}
+        >
+          Shop
+        </button>
+
+        <button
+          className={page === "offers" ? "nav-link nav-link-active" : "nav-link"}
+          onClick={() => setPage("offers")}
+        >
+          Offers 🔥
+        </button>
+
+        <div className="search-wrapper">
           <input
             className="search-input"
             type="text"
-            placeholder="🔍 Search products, categories..."
+            placeholder="🔍 Search products..."
             value={search}
             onChange={handleSearchChange}
-            onFocus={() => search.trim() && setShowSuggestions(true)}
-            onKeyDown={handleSearchKeyDown}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
           />
-          {search.trim() && (
-            <button className="search-clear-btn" onClick={() => { setSearch(""); setShowSuggestions(false); }}>✕</button>
-          )}
 
-          {showDropdown && (
+          {showSuggestions && matchingProducts.length > 0 && (
             <div className="search-suggestions">
-              {matchingProducts.length > 0 ? (
-                <>
-                  <div className="search-suggestions-header">Products matching "{search}"</div>
-                  {matchingProducts.map((product) => (
-                    <div key={product.id} className="search-suggestion-item" onClick={() => handleSuggestionClick(product)}>
-                      <img className="search-suggestion-thumb" src={product.image} alt={product.name} />
-                      <div className="suggestion-text">
-                        <div className="search-suggestion-name">
-                          <HighlightMatch text={product.name} query={search} />
-                        </div>
-                        <div className="suggestion-category">
-                          <HighlightMatch text={product.category + (product.subCategory ? ` · ${product.subCategory}` : "")} query={search} />
-                        </div>
-                      </div>
-                      <span className="search-suggestion-price">₹{product.price.toLocaleString("en-IN")}</span>
-                    </div>
-                  ))}
-                  <div className="search-see-all" onClick={handleSearchSubmit}>
-                    See all results for "<strong>{search}</strong>" →
-                  </div>
-                </>
-              ) : (
-                <div className="search-no-results">
-                  <span>🔍</span> No products found for "<strong>{search}</strong>"
+              {matchingProducts.map((product) => (
+                <div
+                  key={product.id}
+                  className="search-suggestion-item"
+                  onClick={() => handleSuggestionClick(product)}
+                >
+                  <img className="search-suggestion-thumb" src={product.images[0]} alt={product.name} />
+                  <span className="search-suggestion-name">{product.name}</span>
+                  <span className="search-suggestion-price">₹{product.price.toLocaleString("en-IN")}</span>
                 </div>
-              )}
+              ))}
             </div>
           )}
         </div>
 
         <button
-          className={page === "wishlist" ? "wishlist-nav-btn wishlist-nav-active" : "wishlist-nav-btn"}
+          className={wishlistCount > 0 ? "cart-button cart-button-active" : "cart-button cart-button-empty"}
           onClick={() => setPage("wishlist")}
-          title="Wishlist"
         >
-          {wishlist.length > 0 ? "❤️" : "🤍"}
-          {wishlist.length > 0 && <span className="wishlist-count-badge">{wishlist.length}</span>}
+          ❤️ Wishlist {wishlistCount > 0 && "(" + wishlistCount + ")"}
         </button>
 
         <button

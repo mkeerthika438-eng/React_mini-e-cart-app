@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { WishlistProvider } from "./context/WishlistContext";
 
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
 
 import HomePage from "./pages/HomePage";
 import ShopPage from "./pages/ShopPage";
@@ -12,7 +12,7 @@ import OrderPage from "./pages/OrderPage";
 import SuccessPage from "./pages/SuccessPage";
 import WishlistPage from "./pages/WishlistPage";
 
-import products from "./data/products";
+import products from "./data/Products";
 import offers from "./data/offers";
 import categories from "./data/categories";
 

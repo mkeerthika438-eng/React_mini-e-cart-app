@@ -9,6 +9,7 @@
   border: 1px solid var(--color-border);
   position: relative;
 }
+
 .product-card:hover {
   box-shadow: var(--shadow-lg);
   transform: translateY(-3px);
@@ -50,7 +51,8 @@
   box-shadow: var(--shadow-sm);
 }
 
-
+/* Small "i" details button in the corner of every card.
+   Clicking it expands a quick-view panel for that one product. */
 .details-toggle-btn {
   position: absolute;
   top: 10px;
@@ -113,6 +115,7 @@
   text-decoration: line-through;
 }
 
+/* Quick-view details panel that slides open inside the card */
 .quick-view-panel {
   background-color: var(--color-primary-light);
   border-radius: var(--radius-sm);
@@ -205,4 +208,143 @@
   .product-image-box {
     height: 160px;
   }
+}
+
+/* ---- Wishlist heart button ---- */
+.wishlist-heart-btn {
+  position: absolute;
+  top: 10px;
+  right: 42px;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s;
+}
+
+.wishlist-heart-btn:hover {
+  transform: scale(1.15);
+}
+
+.wishlist-heart-btn.wishlisted {
+  background: rgba(255,255,255,1);
+}
+
+/* Star rating */
+.star-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  margin: 2px 0;
+}
+
+.pc-star {
+  color: #d1d5db;
+  font-size: 13px;
+}
+.pc-star.filled {
+  color: #f59e0b;
+}
+.pc-rating-num {
+  font-size: 12px;
+  color: var(--color-text-medium);
+  margin-left: 4px;
+}
+
+/* Discount % label inline */
+.price-discount {
+  font-size: 12px;
+  color: var(--color-success);
+  font-weight: 700;
+}
+
+.price-savings {
+  font-size: 12px;
+  color: var(--color-success);
+  font-weight: 600;
+  margin-top: -2px;
+}
+
+/* Search text highlight */
+.search-highlight {
+  background: #fef08a;
+  color: var(--color-text-dark);
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+/* ---- Size selector ---- */
+.size-selector {
+  margin: 4px 0 2px;
+}
+
+.size-label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.size-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.size-selected-tag {
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--color-primary);
+  color: white;
+  border-radius: 4px;
+  padding: 1px 7px;
+}
+
+.size-options {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.size-btn {
+  border: 1.5px solid var(--color-border);
+  background: white;
+  border-radius: 6px;
+  width: 36px;
+  height: 32px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--color-text-dark);
+  transition: border-color 0.12s, background 0.12s, color 0.12s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.size-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.size-btn-active {
+  border-color: var(--color-primary) !important;
+  background: var(--color-primary) !important;
+  color: white !important;
+}
+
+.size-error {
+  font-size: 11px;
+  color: var(--color-danger);
+  font-weight: 600;
+  margin-top: 4px;
 }

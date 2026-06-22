@@ -1,4 +1,7 @@
 import "./Footer.css";
+
+// This component shows the bottom footer section. It is used on every page.
+
 function Footer({ setPage, setFilterCategory, setFilterSubCategory, setSearch }) {
   const categoryList = [
     "Fashion",
@@ -12,12 +15,17 @@ function Footer({ setPage, setFilterCategory, setFilterSubCategory, setSearch })
   ];
 
   const helpList = ["Track Order", "Returns", "FAQs", "Contact Us"];
+
+  // Clicking a category link clears search + sub-category and jumps to Shop
   function goToCategory(categoryName) {
     setFilterCategory(categoryName);
     setFilterSubCategory("All");
     setSearch("");
     setPage("shop");
   }
+
+  // Help links don't have real pages yet, so clicking one just shows
+  // a short message. You can replace this later with real pages.
   function handleHelpClick(linkName) {
     alert(linkName + " page is coming soon!");
   }

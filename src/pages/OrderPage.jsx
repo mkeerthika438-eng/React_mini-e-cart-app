@@ -1,8 +1,8 @@
 import "../components/Pages.css";
-function OrderPage(
-    {
-setPage,
-name, setName,
+
+function OrderPage({
+  setPage,
+  name, setName,
   email, setEmail,
   phone, setPhone,
   address, setAddress,

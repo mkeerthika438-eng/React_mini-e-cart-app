@@ -1,23 +1,24 @@
 import { useState } from "react";
 import "../components/Pages.css";
+
 function CartPage({
-cart,
-onIncrease,
-onDecrease,
-onRemove,
-setPage,
-appliedCoupon,
-setAppliedCoupon,
-totalItems,
-subtotal,
-discountAmount,
-deliveryCharge,
-grandTotal,
-})
- {
+  cart,
+  onIncrease,
+  onDecrease,
+  onRemove,
+  setPage,
+  appliedCoupon,
+  setAppliedCoupon,
+  totalItems,
+  subtotal,
+  discountAmount,
+  deliveryCharge,
+  grandTotal,
+}) {
   const [failedImages, setFailedImages] = useState({});
-  function markImageFailed(id) {
-    setFailedImages((prev) => ({ ...prev, [id]: true }));
+
+  function markImageFailed(key) {
+    setFailedImages((prev) => ({ ...prev, [key]: true }));
   }
 
   return (
@@ -37,47 +38,59 @@ grandTotal,
         {cart.length > 0 && (
           <div className="cart-layout">
             <div className="cart-items-column">
-              {cart.map((item) => (
-                <div key={item.id} className="cart-item-row">
-                  {!failedImages[item.id] ? (
-                    <img
-                      className="cart-item-image"
-                      src={item.image}
-                      alt={item.name}
-                      onError={() => markImageFailed(item.id)}
-                    />
-                  ) : (
-                    <div
-                      className="cart-item-image"
-                      style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: "28px" }}
-                    >
-                      🛍️
-                    </div>
-                  )}
+              {cart.map((item) => {
+                // Unique key per (product + size) combination
+                const itemKey = item.size ? `${item.id}__${item.size}` : `${item.id}`;
+                return (
+                  <div key={itemKey} className="cart-item-row">
+                    {!failedImages[itemKey] ? (
+                      <img
+                        className="cart-item-image"
+                        src={item.image}
+                        alt={item.name}
+                        onError={() => markImageFailed(itemKey)}
+                      />
+                    ) : (
+                      <div
+                        className="cart-item-image"
+                        style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: "28px" }}
+                      >
+                        🛍️
+                      </div>
+                    )}
 
-                  <div style={{ flex: "1" }}>
-                    <div className="cart-item-name">{item.name}</div>
-                    <div className="cart-item-category">
-                      {item.category}{item.subCategory ? " · " + item.subCategory : ""}
-                    </div>
-                    <div className="cart-item-price">₹{item.price.toLocaleString("en-IN")}</div>
-                  </div>
+                    <div style={{ flex: "1" }}>
+                      <div className="cart-item-name">{item.name}</div>
+                      <div className="cart-item-category">
+                        {item.category}{item.subCategory ? " · " + item.subCategory : ""}
+                      </div>
 
-                  <div className="cart-item-actions">
-                    <div className="cart-item-total">
-                      ₹{(item.price * item.qty).toLocaleString("en-IN")}
+                      {/* Size badge — only shown for Fashion items */}
+                      {item.size && (
+                        <div className="cart-item-size-badge">
+                          Size: <strong>{item.size}</strong>
+                        </div>
+                      )}
+
+                      <div className="cart-item-price">₹{item.price.toLocaleString("en-IN")}</div>
                     </div>
-                    <div className="qty-controls">
-                      <button className="qty-small-btn" onClick={() => onDecrease(item.id)}>−</button>
-                      <span style={{ fontWeight: "700", minWidth: "20px", textAlign: "center" }}>
-                        {item.qty}
-                      </span>
-                      <button className="qty-small-btn" onClick={() => onIncrease(item.id)}>+</button>
-                      <button className="remove-btn" onClick={() => onRemove(item.id)}>🗑</button>
+
+                    <div className="cart-item-actions">
+                      <div className="cart-item-total">
+                        ₹{(item.price * item.qty).toLocaleString("en-IN")}
+                      </div>
+                      <div className="qty-controls">
+                        <button className="qty-small-btn" onClick={() => onDecrease(item.id, item.size || null)}>−</button>
+                        <span style={{ fontWeight: "700", minWidth: "20px", textAlign: "center" }}>
+                          {item.qty}
+                        </span>
+                        <button className="qty-small-btn" onClick={() => onIncrease(item.id, item.size || null)}>+</button>
+                        <button className="remove-btn" onClick={() => onRemove(item.id, item.size || null)}>🗑</button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="summary-box">

@@ -1,6 +1,11 @@
+import { useState } from "react";
 import ProductCard from "../components/ProductCard";
+import QuickPreviewModal from "../components/QuickPreviewModal";
 import "../components/Pages.css";
+
 function HomePage({ products, categories, cart, onAdd, onIncrease, onDecrease, onBuyNow, setPage, setFilterCategory, setFilterSubCategory, setSearch }) {
+  const [previewProduct, setPreviewProduct] = useState(null);
+
   const badgeList = [
     { icon: "🚚", title: "Free Delivery", desc: "On orders above ₹1,000" },
     { icon: "↩️", title: "Easy Returns", desc: "7 day hassle-free returns" },
@@ -8,15 +13,16 @@ function HomePage({ products, categories, cart, onAdd, onIncrease, onDecrease, o
     { icon: "✅", title: "Genuine Products", desc: "100% original products" },
   ];
 
-const featuredProducts = products.slice(0, 4);
-function goToCategory(categoryName) {
+  const featuredProducts = products.slice(0, 8);
+
+  function goToCategory(categoryName) {
     setFilterCategory(categoryName);
     setFilterSubCategory("All");
     setSearch("");
     setPage("shop");
   }
 
-return (
+  return (
     <div className="page-wrapper">
       <div className="hero-section">
         <div className="hero-small-text">SUMMER MEGA SALE 2025</div>
@@ -47,31 +53,32 @@ return (
         </div>
       </div>
 
-<div className="page-container" style={{ marginTop: "40px" }}>
+      <div className="page-container" style={{ marginTop: "40px" }}>
         <div className="section-heading-row">
           <h2 className="section-heading">🌟 Featured Products</h2>
           <button className="view-all-btn" onClick={() => setPage("shop")}>View All</button>
         </div>
 
-<div className="product-grid">
+        <div className="product-grid">
           {featuredProducts.map((product) => {
-            const cartItem = cart.find((item) => item.id === product.id);
+            const cartItems = cart.filter((item) => item.id === product.id);
             return (
               <ProductCard
                 key={product.id}
                 product={product}
-                cartItem={cartItem}
+                cartItems={cartItems}
                 onAdd={onAdd}
                 onIncrease={onIncrease}
                 onDecrease={onDecrease}
                 onBuyNow={onBuyNow}
+                onPreview={setPreviewProduct}
               />
             );
           })}
         </div>
       </div>
 
-<div className="page-container" style={{ marginTop: "40px" }}>
+      <div className="page-container" style={{ marginTop: "40px", marginBottom: "40px" }}>
         <div className="badge-grid">
           {badgeList.map((badge) => (
             <div key={badge.title} className="badge-card">
@@ -84,6 +91,18 @@ return (
           ))}
         </div>
       </div>
+
+      {previewProduct && (
+        <QuickPreviewModal
+          product={previewProduct}
+          onClose={() => setPreviewProduct(null)}
+          onAdd={onAdd}
+          onBuyNow={onBuyNow}
+          cartItems={cart.filter((i) => i.id === previewProduct.id)}
+          onIncrease={onIncrease}
+          onDecrease={onDecrease}
+        />
+      )}
     </div>
   );
 }

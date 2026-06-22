@@ -1,50 +1,16 @@
-const products = [
-{ 
-id: 1,
-name: "iPhone 15 Pro",
- price: 134900, 
- oldPrice: 149900,
-  category: "Mobiles",
-   image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500&h=500&fit=crop&q=80", 
-   rating: 4.8 
-},
-  { 
-id: 2,
-name: "Samsung Galaxy S24",
-price: 79999,
-oldPrice: 89999, 
-category: "Mobiles", 
-image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=500&h=500&fit=crop&q=80", 
-rating: 4.6 
-},
-  {
-id: 3, 
-name: "Google Pixel 8", 
-price: 67999, 
-oldPrice: 75999, 
-category: "Mobiles", 
-image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&h=500&fit=crop&q=80", 
-rating: 4.5 
-},
-  { 
-    id: 4, 
-name: "OnePlus 12",
- price: 64999, 
- oldPrice: 69999, 
- category: "Mobiles", 
-image: "https://images.unsplash.com/photo-1592286927505-1def25115481?w=500&h=500&fit=crop&q=80", 
-rating: 4.4 
-},  
-{
-     id: 5,
-name: "Xiaomi Redmi Note 13", 
-price: 18999, 
-oldPrice: 21999, 
-category: "Mobiles", 
-image: "https://images.unsplash.com/photo-1567581935884-3349723552ca?w=500&h=500&fit=crop&q=80", 
-rating: 4.2 
+// This file has all the product information.
+// category must match a name in categories.js
+// If a product belongs to Fashion, it also needs a subCategory: "Boys" / "Girls" / "Kids"
 
-},
+const products = [
+  // ---------------- MOBILES ----------------
+  { id: 1, name: "iPhone 15 Pro", price: 134900, oldPrice: 149900, category: "Mobiles", image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500&h=500&fit=crop&q=80", rating: 4.8 },
+  { id: 2, name: "Samsung Galaxy S24", price: 79999, oldPrice: 89999, category: "Mobiles", image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=500&h=500&fit=crop&q=80", rating: 4.6 },
+  { id: 3, name: "Google Pixel 8", price: 67999, oldPrice: 75999, category: "Mobiles", image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&h=500&fit=crop&q=80", rating: 4.5 },
+  { id: 4, name: "OnePlus 12", price: 64999, oldPrice: 69999, category: "Mobiles", image: "https://images.unsplash.com/photo-1592286927505-1def25115481?w=500&h=500&fit=crop&q=80", rating: 4.4 },
+  { id: 5, name: "Xiaomi Redmi Note 13", price: 18999, oldPrice: 21999, category: "Mobiles", image: "https://images.unsplash.com/photo-1567581935884-3349723552ca?w=500&h=500&fit=crop&q=80", rating: 4.2 },
+
+  // ---------------- ELECTRONICS ----------------
   { id: 6, name: "MacBook Air M3", price: 114900, oldPrice: 124900, category: "Electronics", image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&h=500&fit=crop&q=80", rating: 4.9 },
   { id: 7, name: "Dell XPS 15 Laptop", price: 109900, oldPrice: 119900, category: "Electronics", image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&h=500&fit=crop&q=80", rating: 4.5 },
   { id: 8, name: "Sony WH-1000XM5 Headphones", price: 26990, oldPrice: 34990, category: "Electronics", image: "https://images.unsplash.com/photo-1545127398-14699f92334b?w=500&h=500&fit=crop&q=80", rating: 4.8 },

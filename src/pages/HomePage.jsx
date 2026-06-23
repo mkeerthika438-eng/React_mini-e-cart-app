@@ -25,7 +25,7 @@ function HomePage({ products, categories, cart, onAdd, onIncrease, onDecrease, o
   return (
     <div className="page-wrapper">
       <div className="hero-section">
-        <div className="hero-small-text">SUMMER MEGA SALE 2025</div>
+        <div className="hero-small-text">SUMMER MEGA SALE 2026</div>
         <h1 className="hero-title">Everything You Need, One Click Away 🔥</h1>
         <p className="hero-subtitle">
           Fashion, Mobiles, Electronics, Grocery, Toys & more — Up to 30% off today only!

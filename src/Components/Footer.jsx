@@ -71,7 +71,7 @@ alert("Our FAQ center provides instant answers to the most frequently asked cust
       </div>
 
       <div className="footer-bottom">
-        © 2025 ShopEasy. All rights reserved. Made with ❤️ in India.
+        © 2026 ShopEasy. All rights reserved. Made with ❤️ in India.
       </div>
     </div>
   );
